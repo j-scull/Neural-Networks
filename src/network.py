@@ -1,4 +1,4 @@
-import numpy as np
+python  import numpy as np
 import random
 
 """
@@ -65,13 +65,11 @@ class Network(object):
         for x, y in mini_batch:
             # compute the gradient cost function
             delta_nabla_b, delta_nabla_w = self.backprop(x, y)
-            delta_nabla_w = np.transpose(delta_nabla_w)
             nabla_b = [nb + dnb for nb, dnb in zip(nabla_b, delta_nabla_b)]
             nabla_w = [nw + dnw for nw, dnw in zip(nabla_w, delta_nabla_w)]
-        # adjust weights
+        # adjust weightsa
         self.weights = [w - (eta / len(mini_batch)) * nw for w, nw in zip(self.weights, nabla_w)]
         self.biases = [b - (eta / len(mini_batch)) * nb for b,nb in zip(self.biases, nabla_b)]
-
 
     def backprop(self, x, y):
         """
@@ -91,7 +89,7 @@ class Network(object):
         delta = self.cost_derivative(activations[-1], y) * sigmoid_prime(zs[-1])
         nabla_b[-1] = delta
         nabla_w[-1] = delta @ activations[-2].transpose()
-        # l is a llayer of neurons
+        # l is a layer of neurons
         for l in range(2, self.num_layers):
             z = zs[-l]
             sp = sigmoid_prime(z)
@@ -118,7 +116,7 @@ class Network(object):
 
 def sigmoid(z):
     """
-    A np array representing a vector wa + b
+    z: an np array representing a vector wa + b
     Calculates the sigmoid values for z
     *np.exp applies the sigmoid function elementwise to arrays
     """
