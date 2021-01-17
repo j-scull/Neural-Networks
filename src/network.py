@@ -55,7 +55,7 @@ class Network(object):
             if test_data:
                 print("Epoch {0}: {1} / {2}".format(i, self.evaluate(test_data), n_test))
             else:
-                print("Epoch {0} complete".format(j))
+                print("Epoch {0} complete".format(i))
 
     def update_mini_batch(self, mini_batch, eta):
         """
@@ -69,7 +69,7 @@ class Network(object):
             nabla_w = [nw + dnw for nw, dnw in zip(nabla_w, delta_nabla_w)]
         # adjust weightsa
         self.weights = [w - (eta / len(mini_batch)) * nw for w, nw in zip(self.weights, nabla_w)]
-        self.biases = [b - (eta / len(mini_batch)) * nb for b,nb in zip(self.biases, nabla_b)]
+        self.biases = [b - (eta / len(mini_batch)) * nb for b, nb in zip(self.biases, nabla_b)]
 
     def backprop(self, x, y):
         """
@@ -86,7 +86,7 @@ class Network(object):
             activation = sigmoid(z)
             activations.append(activation)
         # backward pass
-        delta = self.cost_derivative(activations[-1], y) * sigmoid_prime(zs[-1])
+        delta = self.cost_derivative(activations[-1], y) * sigmoid_prime(zs[-1]) # hadamard dot product
         nabla_b[-1] = delta
         nabla_w[-1] = delta @ activations[-2].transpose()
         # l is a layer of neurons
@@ -101,6 +101,8 @@ class Network(object):
 
     def evaluate(self, test_data):
         """
+        Calculates the number of correctly labelled instances using the test data
+        # np.argmax takes the maximum value from an output node as the Network's classification
         """
         test_results = [(np.argmax(self.feedForward(x)), y) for (x, y) in test_data]
         return sum(int(x == y) for (x, y) in test_results)
